@@ -1,15 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&family=Source+Code+Pro:wght@400;700&display=swap");
+
 .page1 {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-image: url("../accets/background1.jpg");
   background-size: cover;
   background-position: center;
+  background-color: snow;
+  background-image: url(./logo1.png);
+}
+.buttonsX {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
 }
 
 .component1 {
-  height: 400px;
-  width: 350px;
+  height: 90%;
+  width: 90%;
   background-color: transparent;
   display: flex;
   justify-content: center;
@@ -19,130 +27,219 @@
   inset: 0px;
   margin: auto;
   -webkit-backdrop-filter: blur(5px); /* For older WebKit browsers */
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(100px);
   flex-direction: column;
-  animation: shadows 2.5s infinite;
+  box-shadow: 0px 0px 10px rgb(239, 230, 230);
+  color: rgb(255, 255, 255);
+}
+.component12 {
+  height: 380px;
+  width: 340px;
+  background-color: transparent;
+  align-items: center;
+  border-radius: 20px;
+  position: fixed;
+  inset: 0px;
+  margin: auto;
+  -webkit-backdrop-filter: blur(5px); /* For older WebKit browsers */
+  backdrop-filter: blur(100px);
+  flex-direction: column;
+  box-shadow: 0px 0px 10px rgb(2, 17, 7);
+  color: rgb(255, 255, 255);
+  animation: fadeIn 1s ease-in-out;
+}
+.component11 {
+  height: auto;
+  width: auto;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  position: fixed;
+  inset: 0px;
+  margin: auto;
+  -webkit-backdrop-filter: blur(5px); /* For older WebKit browsers */
+  backdrop-filter: blur(100px);
+  flex-direction: column;
+  color: rgb(255, 255, 255);
+
 }
 
-u {
-  text-decoration-style: wavy;
+.xyz {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  animation: fadeIn 1s ease-in-out;
 }
 
-@keyframes shadows {
-  0% {
-    box-shadow: 0px 0px 10px 5px #11cfff;
-  }
-  50% {
-    box-shadow: 0px 0px 10px 5px rgb(3, 243, 231);
-  }
-  75% {
-    box-shadow: 0px 0px 10px 5px rebeccapuprle;
-  }
-  100% {
-    box-shadow: 0px 0px 10px 5px #48abe0;
-  }
-}
-
-.page1 h1 {
+.component1 h1 {
+  padding: 10px;
   color: orangered;
   text-align: center;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  display: block;
-  padding: 10px;
-  border-radius: 40px;
-  font-size: 4rem;
-  background-image: url("https://thumbs.dreamstime.com/b/digital-ai-artificial-intelligence-machine-learning-backgrou-digital-ai-artificial-intelligence-machine-learning-background-132038727.jpg");
-  background-repeat: repeat;
-  background-size: cover;
-  -webkit-background-clip: text; /* For webkit browsers */
-  background-clip: text;
-  -webkit-text-fill-color: transparent; /* Makes the text see-through to show the background */
-  font-weight: bold;
-  font-family: "Steelfish Rg", "helvetica neue", helvetica, arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-shadow: 3px 3px 10px rgba(247, 62, 62, 0.7);
-  cursor: pointer;
 }
 
-.comp2 {
-  position: absolute;
-  height: auto;
-  margin-top: 330px;
+.component12 h1 {
+  padding: 10px;
+  color: orangered;
+  text-align: center;
+}
+
+.codeAi {
+  color: orangered;
+  text-decoration: none;
+}
+
+.codeAi:hover {
+  text-decoration: underline;
+}
+
+.instructions-container {
+  padding: 20px;
   border-radius: 10px;
-  padding: 10px;
-  height: auto;
-  border-radius: 20px 0px 20px 0px;
-  border: none;
   background-color: transparent;
-  position: absolute;
-  margin-left: 68%;
+  width: 70%;
 }
 
-.comp2:hover {
-  background-color: rgb(25, 240, 240, 0.3);
+.instructions-container h1 {
+  margin-bottom: 20px;
 }
 
-.send {
-  color: skyblue;
-  font-size: 25px;
-  padding: 10px;
-  position: absolute;
-  margin-top: 25%;
-  border-radius: 50%;
+.instructions-container p {
+  margin-bottom: 20px;
 }
 
-.send:hover{
-  background-color: rgb(25, 240, 240, 0.3);
-
+.instructions-container ul {
+  padding-top: 10px;
+  padding-left: 20px;
 }
 
+.instructions-container li {
+  margin-bottom: 10px;
+}
+
+.instructions-container a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.instructions-container a:hover {
+  text-decoration: underline;
+}
+
+.buttons {
+  animation: fadeIn 2s ease-in-out;
+}
 .component1 button {
   background-color: transparent;
-  border: none;
+  border: 1px solid #e9eef3b3;
+  color: #e9eef3b3;
+}
+.component12 button {
+  background-color: transparent;
+  border: 1px solid #e9eef3b3;
+  color: #e9eef3b3;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&family=Source+Code+Pro:wght@400;700&display=swap");
+.btnsDiv {
+  height: 200px;
+  width: auto;
+}
 
 .btns {
-  background-color: rgb(1, 3, 39);
-  color: rgb(1, 37, 50);
-  color: #004d40;
   padding: 5px;
   font-size: 20px;
-  border: 3px solid transparent;
   border-radius: 10px;
-  border: 3px solid rgb(1, 3, 39);
   font-family: "Lato", sans-serif;
 }
 
 .btns:hover {
   color: rgb(113, 226, 251);
   background-color: rgb(1, 3, 39);
+  box-shadow: 0px 5px 5px rgb(2, 2, 2);
+  border: 1px solid rgb(1, 3, 39);
 }
 
 .getStarted {
   margin-left: 25px;
 }
 
-.buttonsX {
+.hover1 {
+  padding: 5px;
+  font-size: 20px;
+  border-radius: 10px;
+  font-family: "Lato", sans-serif;
+}
+
+.hover1:hover {
+  color: rgb(113, 226, 251);
+  border: 1px solid rgb(100, 100, 100);
+}
+
+/* .page1 h1{
+  box-shadow: 0px 5px 100px rgb(0, 16, 0);
+    animation: shadows1 4.5s infinite;
+
+} */
+/* h1:hover{
+  box-shadow: 0px 5px 50px rgb(0, 16, 0);
+} */
+@keyframes shadows1 {
+  0% {
+    box-shadow: 0px 0px 100px 5px rgb(0, 16, 0);
+  }
+  50% {
+    box-shadow: 0px 0px 50px 5px rgb(79, 153, 79);
+  }
+  75% {
+    box-shadow: 0px 0px 100px 5px rebeccapuprle;
+  }
+  100% {
+    box-shadow: 0px 0px 100px 5px rgb(0, 16, 0);
+  }
+}
+
+/* .sh{
+  box-shadow: 0px 5px 5px rgb(0, 16, 0) ;
+
+} */
+
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: row;
-  position: absolute;
-  margin-top: -100%;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it is above all other elements */
+  animation: fadeOut 0.5s ease-out 2.5s forwards; /* Adjust timings as needed */
+  background-color: #1b1000;
 }
 
-.send1 {
-  color: black;
-  font-size: 25px;
-  padding-top: 10px;
-  padding-left: 7px;
+/* .splash-screen img {
+  max-width: 100%;
+  max-height: 100%;
+} */
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
-.next {
-  padding-top: 100px;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.hover1:hover{
-  background-color: rgb(1, 3, 39 , 0.3);
+.ffff {
+  animation: fadeIn 2s ease-in-out;
 }

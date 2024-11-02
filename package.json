@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "https://yourusername.github.io/my-frontend",
+  "homepage": "https://rockyhans.github.io/AiApp",
   "private": true,
   "dependencies": {
     "@codemirror/autocomplete": "^6.18.1",

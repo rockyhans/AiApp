@@ -10,7 +10,7 @@ const AuthComponent = () => {
     // Handle signup
     const handleSignup = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/signup', { name, email, password });
+            const response = await axios.post('https://appbackend-7d64.onrender.com/signup', { name, email, password });
             alert('Signup successful');
         } catch (error) {
             alert('Error signing up');
@@ -20,7 +20,7 @@ const AuthComponent = () => {
     // Handle login
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/login', { email, password });
+            const response = await axios.post('https://appbackend-7d64.onrender.com/login', { email, password });
             const { token } = response.data;
             localStorage.setItem('authToken', token);
             setIsLoggedIn(true);

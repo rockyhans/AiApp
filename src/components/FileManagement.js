@@ -11,7 +11,7 @@ const FileManagement = () => {
   }, []);
 
   const fetchFiles = async () => {
-    const response = await fetch('http://localhost:5000/api/files', {
+    const response = await fetch('https://appbackend-7d64.onrender.com/api/files', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ const FileManagement = () => {
 
   const handleFileCreation = async (e) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:5000/api/files', {
+    const response = await fetch('https://appbackend-7d64.onrender.com/api/files', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const FileManagement = () => {
 
   // Delete file
   const handleDelete = async (id) => {
-    const response = await fetch(`http://localhost:5000/api/delete/${id}`, {
+    const response = await fetch(`https://appbackend-7d64.onrender.com/api/delete/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const FileManagement = () => {
 
   // Save modified content
   const handleSave = async (id) => {
-    const response = await fetch(`http://localhost:5000/api/update/${id}`, {
+    const response = await fetch(`https://appbackend-7d64.onrender.com/api/update/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

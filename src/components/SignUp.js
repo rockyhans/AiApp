@@ -8,7 +8,7 @@ function SignUp() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:5000/api/auth/signup', {
+    const response = await fetch('https://appbackend-7d64.onrender.com/api/auth/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password }),
@@ -29,7 +29,7 @@ function SignUp() {
     <>
       <div className="auth-container">
         <form className="auth-form" onSubmit={handleSignup}>
-          <label className="label" style={{ color: "rgb(37, 37, 37)" }}>
+          <label className="label">
             <b> Name </b>
             <br />
             <input

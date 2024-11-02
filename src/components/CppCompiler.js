@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useCodeMirror } from "@uiw/react-codemirror";
-import { python } from "@codemirror/lang-python";
+import { cpp } from "@codemirror/lang-cpp";
 import { solarizedDark } from "@uiw/codemirror-theme-solarized";
 
-function PythonCompiler() {
-  const [pythonCode, setPythonCode] = useState("");
+function CppCompiler() {
+  const [cppCode, setCppCode] = useState("");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,32 +21,32 @@ function PythonCompiler() {
   ]);
   const [clicked, setClicked] = useState(false);
 
-  const pythonEditor = useRef(null);
+  const cppEditor = useRef(null);
 
   useCodeMirror({
-    container: pythonEditor.current,
-    value: pythonCode,
-    theme: solarizedDark, // Use githubDark for dark mode
-    extensions: [python(), solarizedDark],
+    container: cppEditor.current,
+    value: cppCode,
+    theme: solarizedDark,
+    extensions: [cpp(), solarizedDark],
     onChange: (value) => {
-      setPythonCode(value);
-      setLogOutput(`PYTHON: ${value}`);
+      setCppCode(value);
+      setLogOutput(`C++: ${value}`);
     },
-    lineNumbers: true, // Show line numbers
-    lineWrapping: false, // Disable line wrapping (allows horizontal scrolling)
-    scrollbarStyle: "native", // Ensure the scroll bar is visible
-    viewportMargin: Infinity, // Show all content
+    lineNumbers: true,
+    lineWrapping: false,
+    scrollbarStyle: "native",
+    viewportMargin: Infinity,
   });
 
   const doesCodeRequireInput = (code) => {
-    return code.includes("Scanner") || code.includes("BufferedReader");
+    return code.includes("cin") || code.includes("getline");
   };
 
-  const compilePythonCode = async () => {
+  const compileCppCode = async () => {
     setError("");
     setOutput("");
 
-    if (doesCodeRequireInput(pythonCode) && input.trim() === "") {
+    if (doesCodeRequireInput(cppCode) && input.trim() === "") {
       setInputType("string");
       setError("Please provide input for the code — expected string.");
       setInputRequired(true);
@@ -57,12 +57,12 @@ function PythonCompiler() {
     setInputRequired(false);
 
     const postData = {
-      language: "python",
-      version: "3.10.0",
+      language: "cpp",
+      version: "10.2.0",
       files: [
         {
-          name: "Main.py",
-          content: pythonCode,
+          name: "Main.cpp",
+          content: cppCode,
         },
       ],
       stdin: input,
@@ -88,7 +88,7 @@ function PythonCompiler() {
         error.response ? error.response.data : error.message
       );
       setError(
-        "Failed to compile Python code. Please check your code and try again."
+        "Failed to compile C++ code. Please check your code and try again."
       );
     }
 
@@ -104,8 +104,6 @@ function PythonCompiler() {
     setError("");
     setInputRequired(false);
   };
-
-  // PythonCompiler
 
   const generateAns = async () => {
     setLoading(true);
@@ -200,7 +198,7 @@ function PythonCompiler() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ name, content: pythonCode }), // Send file name and code content
+        body: JSON.stringify({ name, content: cppCode }), // Send file name and code content
       }
     );
 
@@ -208,7 +206,7 @@ function PythonCompiler() {
     const data = await response.json();
     if (response.ok) {
       setName(""); // Reset the input field for file name
-      setPythonCode(""); // Reset the code content
+      setCppCode(""); // Reset the code content
       setShowInput(false); // Hide the input field after file creation
       fetchFiles(); // Fetch the updated list of files
     } else {
@@ -247,14 +245,14 @@ function PythonCompiler() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
-        body: JSON.stringify({ content: pythonCode }),
+        body: JSON.stringify({ content: cppCode }),
       }
     );
 
     if (response.ok) {
       alert("File updated successfully");
       setEditingFile(null);
-      setPythonCode(""); // Reset the editor's content (refresh the editor)
+      setCppCode(""); // Reset the editor's content (refresh the editor)
       fetchFiles(); // Optionally reload files list
     } else {
       alert("Error updating file");
@@ -265,7 +263,7 @@ function PythonCompiler() {
 
   const startEditing = (file) => {
     setEditingFile(file);
-    setPythonCode(file.content); // Load content into the editor
+    setCppCode(file.content); // Load content into the editor
   };
   // const CreateFileComponent = () => {
   const [showInput, setShowInput] = useState(false); // State to toggle input visibility
@@ -326,19 +324,20 @@ function PythonCompiler() {
   }, [isResizing, dimensions]);
 
   return (
-    <div className="PythonCompiler">
+    <div className="JavaCompiler">
       <div className="j1">
         <h1 className="comH1" style={{ marginLeft: "1%" }}>
-          Python Compiler
+          C++ Compiler
         </h1>
-        {/*<button
+        {/* <button
           onClick={increaseHeight}
           style={{ padding: "10px 20px" }}
           className="increaseBtn"
         >
           <b>Enable Full Screen</b>
-        </button>/*/}
+        </button> */}
       </div>
+
       <div
         className="editor-container"
         style={{
@@ -429,14 +428,14 @@ function PythonCompiler() {
             {editingFile && (
               <div className="files">
                 <div className="margin">
-                  <h2>Edit `{editingFile.name}` File :</h2>
+                  <h2>Edit `{editingFile.name}`:</h2>
                   <button onClick={() => handleSave(editingFile._id)}>
                     Save Changes
                   </button>
                   <button
                     onClick={() => {
                       setEditingFile(null);
-                      setPythonCode("");
+                      setCppCode("");
                     }}
                   >
                     Cancel
@@ -447,26 +446,25 @@ function PythonCompiler() {
           </div>
         </div>
 
-        <div className="inpOut">
-          <div className="ele1" style={{ borderTop: "none" }}>
-            <br />
+        <div className="inpOut" >
+          <div className="ele1" style={{ borderTop: "none"}}>
+            <br/>
             <div className="row">
-              <h3 className="compWri">Write Your Python Code:</h3>
-              
-                <button
-                  onClick={() => {
-                    compilePythonCode();
-                  }}
-                  className="submit"
-                  style={{ border: "none" }}
-                >
-                  <b>{loading ? "Compiling..." : "Compile and Run"}</b>
-                </button>
-             
+              <h3 className="compWri">Write Your C++ Code :</h3>
+
+              <button
+                onClick={() => {
+                  compileCppCode();
+                }}
+                className="submit"
+                style={{ border: "none" }}
+              >
+                <b>{loading ? "Compiling..." : "Compile and Run"}</b>
+              </button>
             </div>
             <br />
             <div
-              ref={pythonEditor}
+              ref={cppEditor}
               className="editor"
               style={{
                 height: isFullHeight ? "85vh" : "450px",
@@ -518,13 +516,14 @@ function PythonCompiler() {
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Enter requires input....."
+                placeholder="Enter required input..."
                 className="input-textarea"
                 style={{
                   boxShadow: "none",
                   backgroundColor: "rgba(11, 11, 11, 0.7)",
                 }}
               />
+              
               <button
                 onClick={clearInput}
                 className="clear-input-btn"
@@ -547,7 +546,7 @@ function PythonCompiler() {
                   textAlign: "center",
                 }}
               >
-                Output:
+                Output :
               </h3>
 
               <textarea
@@ -568,9 +567,7 @@ function PythonCompiler() {
         </div>
       </div>
 
-      <h1 className="comH1V" style={{ marginTop: "20px", textAlign: "left" }}>
-        Code with AI{" "}
-      </h1>
+      <h1 className="comH1V">Code with AI </h1>
 
       <div className="aiPageV" style={{ marginTop: "20px" }}>
         <div className="ele2">
@@ -607,10 +604,8 @@ function PythonCompiler() {
                 boxShadow: "0px 0px 100px black",
                 borderRadius: "5px",
               }}
-              placeholder="View your Code written in the editor , and feel free to ask any Questions related to it!"
-              onChange={(e) => setLogOutput(e.target.value)} // Capture user input and update logOutput state
-
-              // disabled
+              placeholder="View your Code written in the editor, and feel free to ask any Questions related to it..."
+              onChange={(e) => setLogOutput(e.target.value)}
             />
           </div>
           <br />
@@ -654,4 +649,4 @@ function PythonCompiler() {
   );
 }
 
-export default PythonCompiler;
+export default CppCompiler;

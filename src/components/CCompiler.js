@@ -156,13 +156,16 @@ function CCompiler() {
   }, []);
 
   const fetchFiles = async () => {
-    const response = await fetch("http://localhost:5000/api/files", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    });
+    const response = await fetch(
+      "https://appbackend-7d64.onrender.com/api/files",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      }
+    );
 
     const data = await response.json();
     if (response.ok) {
@@ -183,14 +186,17 @@ function CCompiler() {
     }
 
     // Make the POST request to the server to create a new file
-    const response = await fetch("http://localhost:5000/api/files", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ name, content: cCode }), // Send file name and code content
-    });
+    const response = await fetch(
+      "https://appbackend-7d64.onrender.com/api/files",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name, content: cCode }), // Send file name and code content
+      }
+    );
 
     // Handle the response from the server
     const data = await response.json();
@@ -205,13 +211,16 @@ function CCompiler() {
   };
 
   const handleDelete = async (id) => {
-    const response = await fetch(`http://localhost:5000/api/delete/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    });
+    const response = await fetch(
+      `https://appbackend-7d64.onrender.com/api/delete/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      }
+    );
 
     if (response.ok) {
       alert("File deleted successfully");
@@ -224,14 +233,17 @@ function CCompiler() {
   const handleSave = async (id) => {
     setLoading(true); // Indicate loading
 
-    const response = await fetch(`http://localhost:5000/api/update/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-      body: JSON.stringify({ content: cCode }),
-    });
+    const response = await fetch(
+      `https://appbackend-7d64.onrender.com/api/update/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify({ content: cCode }),
+      }
+    );
 
     if (response.ok) {
       alert("File updated successfully");
@@ -252,25 +264,113 @@ function CCompiler() {
   // const CreateFileComponent = () => {
   const [showInput, setShowInput] = useState(false); // State to toggle input visibility
 
+  const [isFullHeight, setIsFullHeight] = useState(false); // To toggle between normal and full screen height
+
+  const increaseHeight = () => {
+    setIsFullHeight(true); // Set height to 100% of the screen
+  };
+  const closePopup = () => {
+    setIsFullHeight(false); // Close the popup and reset height
+  };
+
+  const [dimensions, setDimensions] = useState({
+    width: 200,
+    height: 100,
+    top: 680,
+  });
+  const [isResizing, setIsResizing] = useState(false);
+
+  const handleMouseDown = () => {
+    setIsResizing(true);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (isResizing) {
+        const newHeight = dimensions.height + (dimensions.top - e.clientY);
+        const newTop = e.clientY;
+
+        if (newHeight > 100) {
+          // Minimum height of 100px
+          setDimensions((prevDimensions) => ({
+            ...prevDimensions,
+            height: newHeight,
+            top: newTop,
+          }));
+        }
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    if (isResizing) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    } else {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isResizing, dimensions]);
+
   return (
     <div className="JavaCompiler">
-      <h1 className="comH1" style={{ marginLeft: "1%" }}>
-        C Compiler
-      </h1>
-      <div className="editor-container">
+      <div className="j1">
+        <h1 className="comH1" style={{ marginLeft: "1%" }}>
+          C Compiler
+        </h1>
+        {/* <button
+          onClick={increaseHeight}
+          style={{ padding: "10px 20px" }}
+          className="increaseBtn"
+        >
+          <b>Enable Full Screen</b>
+        </button> */}
+      </div>
+      <div
+        className="editor-container"
+        style={{
+          height: isFullHeight ? "100vh" : "auto", // Toggle between 100px and 100% screen height
+          transition: "height 0.3s ease-in-out", // Smooth transition
+          position: isFullHeight ? "fixed" : "static", // Become a popup when full height
+          top: isFullHeight ? 20 : "auto",
+          left: isFullHeight ? 0 : "auto",
+          marginBottom: isFullHeight ? "20px" : "", // Toggle between 100px and 100% screen height
+          zIndex: isFullHeight ? 999 : "auto", // Bring to the front when full screen
+          backgroundColor: isFullHeight
+            ? " rgb(0, 17, 23, 0.3)"
+            : "transparent",
+        }}
+      >
+        {isFullHeight && (
+          <button
+            onClick={closePopup}
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              padding: "10px 20px",
+              backgroundColor: "transparent",
+              boxShadow: "0px 0px 5px #0395f7",
+              color: "whitesmoke",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Disable
+          </button>
+        )}
+
         <div className="ele0">
           <div className="filesBar">
-            <div>
-              <form onSubmit={handleFileCreation} className="files">
-                {showInput && (
-                  <input
-                    type="text"
-                    placeholder="File Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                )}
+            <form onSubmit={handleFileCreation} className="files">
+              {showInput && (
                 <input
                   type="text"
                   placeholder="File Name"
@@ -278,24 +378,46 @@ function CCompiler() {
                   onChange={(e) => setName(e.target.value)}
                   required
                 />
-                <button type="submit">Create File</button>
-              </form>
-            </div>
-            <h2 style={{ color : "black"}}>Your Files :</h2>
+              )}
+              <input
+                type="text"
+                placeholder="File Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+              <button type="submit">Create File</button>
+            </form>
+
             <div className="file-list-container">
-              <ul>
-                {files.map((file) => (
-                  <li key={file._id}>
-                    <h3>{file.name} :</h3>
-                    <div className="butn">
-                      <button onClick={() => startEditing(file)}>Open</button>
-                      <button onClick={() => handleDelete(file._id)}>
-                        Delete
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <h2
+                style={{
+                  // width: "100%",
+                  color: "black",
+                  textShadow: "0px 0px 3px skyblue",
+                  // textAlign: "center",
+                  position: "absolute",
+                  marginTop: "0px",
+                  marginLeft: "0px",
+                }}
+              >
+                <b>Your Files :</b>
+              </h2>
+              <div className="ulScroll">
+                <ul>
+                  {files.map((file) => (
+                    <li key={file._id}>
+                      <h3>{file.name} :</h3>
+                      <div className="butn">
+                        <button onClick={() => startEditing(file)}>Open</button>
+                        <button onClick={() => handleDelete(file._id)}>
+                          Delete
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
             {editingFile && (
@@ -319,12 +441,12 @@ function CCompiler() {
           </div>
         </div>
 
-        <div className="ele1">
-          <br />
-          <div className="row">
-            <h3 className="compWri">Write Your C Code:</h3>
-            <div>
-              {error && <div className="error">{error}</div>}
+        <div className="inpOut">
+          <div className="ele1" style={{ borderTop: "none" }}>
+            <br />
+            <div className="row">
+              <h3 className="compWri">Write Your C Code:</h3>
+
               <button
                 // onClick={compileJavaCod }
                 onClick={() => {
@@ -336,71 +458,113 @@ function CCompiler() {
                 <b>{loading ? "Compiling..." : "Compile and Run"}</b>
               </button>
             </div>
-          </div>
-          <br />
-          <div ref={cEditor} className="editor" />
-        </div>
-
-        <div className="ele2">
-          <div className="iptDiv">
-            <h3 style={{ color: "white", textAlign: "left" }}>
-              <b>Input: </b>
-            </h3>
-            <textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Enter requires input....."
-              className="input-textarea"
-              style={{
-                boxShadow: "none",
-                backgroundColor: "rgba(11, 11, 11, 0.7)",
-              }}
-            />
             <br />
-            <button onClick={clearInput} className="clear-input-btn">
-              Clear Input
-            </button>
-          </div>
-
-          <div className="optDiv">
-            {error && <div className="error">{error}</div>}
-            {inputRequired && (
-              <div className="input-message" style={{ color: "orange" }}>
-                Please provide input for the code — expected {inputType}.
-              </div>
-            )}
-            <h3
+            <div
+              ref={cEditor}
+              className="editor"
               style={{
-                color: "white",
-                marginTop: "0px",
-                textAlign: "left",
+                height: isFullHeight ? "85vh" : "450px",
+                transition: "height 0.3s ease-in-out",
+                // marginBottom: isFullHeight ? '-10px' : '10px',
+                // position: isFullHeight ? 'fixed' : 'static',
+                // zIndex: isFullHeight ? 999 : 'auto',
               }}
             >
-              Output:
-            </h3>
+              {isFullHeight && (
+                <div
+                  style={{
+                    width: `${dimensions.width}px`,
+                    height: `${dimensions.height}px`,
+                    backgroundColor: "red",
+                    position: "absolute",
+                    top: `${dimensions.top}px`,
+                    left: "18.25%", // Center hori1%zontally
+                    border: "1px solid black",
+                    userSelect: "none", // Prevents text selection while resizing
+                    paddingTop: "30px",
+                    maxHeight: "200px",
+                  }}
+                >
+                  Resizable Div
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "10px",
+                      backgroundColor: "darkblue",
+                      position: "absolute",
+                      left: "50%",
+                      top: "0px", // Position above the top of the div
+                      transform: "translateX(-50%)",
+                      cursor: "n-resize", // Cursor for resizing downwards
+                    }}
+                    onMouseDown={handleMouseDown}
+                  ></div>
+                </div>
+              )}
+            </div>
+          </div>
 
-            <textarea
-              className="output"
-              value={output}
-              style={{
-                marginTop: "0px",
-                paddingLeft: "15px",
-                border: "none",
-                outline: "none",
-                padding: "10px",
-                resize: "none",
-              }}
-              disabled
-            />
+          <div className="ele2" style={{ borderTop: "none" }}>
+            <div className="iptDivM" style={{ marginTop: "0px" }}>
+              <h3 className="gap">
+                <b>Input : </b>
+              </h3>
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Enter requires input....."
+                className="input-textarea"
+                style={{
+                  boxShadow: "none",
+                  backgroundColor: "rgba(11, 11, 11, 0.7)",
+                }}
+              />
+              <button
+                onClick={clearInput}
+                className="clear-input-btn"
+                style={{ marginTop: "5px" }}
+              >
+                Clear Input
+              </button>
+            </div>
+
+            <div className="optDiv">
+              {inputRequired && (
+                <div className="input-message" style={{ color: "orange" }}>
+                  Please provide input for the code — expected {inputType}.
+                </div>
+              )}
+              <h3
+                style={{
+                  color: "white",
+                  marginTop: "0px",
+                  textAlign: "center",
+                }}
+              >
+                Output:
+              </h3>
+
+              <textarea
+                className="output"
+                value={output}
+                style={{
+                  paddingLeft: "15px",
+                  outline: "none",
+                  padding: "10px",
+                  resize: "none",
+                  height: "340px",
+                  width: "100%",
+                }}
+                disabled
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <h1 className="comH1" style={{ marginTop: "20px", textAlign: "left" }}>
-        Code with AI{" "}
-      </h1>
+      <h1 className="comH1V">Code with AI </h1>
 
-      <div className="aiPage" style={{ marginTop: "20px" }}>
+      <div className="aiPageV" style={{ marginTop: "20px" }}>
         <div className="ele2">
           <button
             className={`colorChangeBtn ${clicked ? "clicked" : ""}`}
@@ -414,6 +578,7 @@ function CCompiler() {
             </b>
           </button>
           <br />
+          <div className="ele22"></div>
         </div>
 
         <div
@@ -430,7 +595,7 @@ function CCompiler() {
                 height: "300px",
                 outline: "none",
                 resize: "none",
-                boxShadow: "0px 0px 10px rgb(252, 134, 134)",
+                boxShadow: "0px 0px 100px black",
                 borderRadius: "5px",
               }}
               placeholder="View your Code written in the editor , and feel free to ask any Questions related to it!"
@@ -457,12 +622,13 @@ function CCompiler() {
                       textAlign: "center",
                       fontFamily: "serif",
                       color: "green",
-                      height: "40px",
+                      height: "50px",
+                      fontSize: "1.5rem",
                       borderRadius: "30px",
                       resize: "none",
                       backgroundColor: "black",
                     }
-                  : {}
+                  : { border: "2px solid black" }
               }
               value={message.text}
               disabled

@@ -2,25 +2,32 @@ import React, { useState } from "react";
 import JavaCompiler from "./JavaCompiler"; // Java Compiler component
 import CCompiler from "./CCompiler"; // C Compiler component
 import PythonCompiler from "./PythonCompiler"; // Python Compiler component
+import CppCompiler from "./CppCompiler";
 import logo from "../srcP.jpg";
 import UserImg from "../userImg.jpg";
-
-function Compilers({ username }) {
+import { useUser } from "./UserContext";
+import "./Compiler.css";
+function Compilers() {
   const [selectedCompiler, setSelectedCompiler] = useState("java");
+  const { username } = useUser(); // Access username from UserContext
 
   return (
     <>
       <div className="App">
         <div className="blur">
-          <header>
+          <header className="header">
             <img alt="logo" src={logo} className="logoImg" />
-            <h1 className="x" style={{ color: "orangered" }}>
+            <h1
+              className="x"
+              style={{ color: "orangered", marginLeft: "70px" }}
+            >
               CodeAI
             </h1>
             <div className="userI">
-              <a href="/LogOut">
-                {" "}
-                <h3>{username ? username : "User Name"}</h3>
+              <a href="/Compilers">
+                <h3 style={{ margin: "5px", marginRight: "15px" }}>
+                  {username ? username : "User Name"}
+                </h3>
               </a>
               <img alt="logo" src={UserImg} />
             </div>
@@ -43,6 +50,12 @@ function Compilers({ username }) {
                 onClick={() => setSelectedCompiler("c")}
               >
                 <b>C Compiler</b>
+              </button>
+              <button
+                className={selectedCompiler === "cpp" ? "active" : ""}
+                onClick={() => setSelectedCompiler("cpp")}
+              >
+                <b>C++ Compiler</b>
               </button>
               <button
                 className={selectedCompiler === "python" ? "active" : ""}
@@ -68,6 +81,13 @@ function Compilers({ username }) {
             }
           >
             <CCompiler />
+          </div>
+          <div
+            className={
+              selectedCompiler === "cpp" ? "compiler active" : "compiler"
+            }
+          >
+            <CppCompiler />
           </div>
           <div
             className={
