@@ -236,7 +236,7 @@ function JavaCompiler() {
     if (response.ok) {
       alert("File updated successfully");
       setEditingFile(null);
-      setJavaCode(""); // Reset the editor's content (refresh the editor)
+      // setJavaCode(""); // Reset the editor's content (refresh the editor)
       fetchFiles(); // Optionally reload files list
     } else {
       alert("Error updating file");

@@ -1012,6 +1012,8 @@ textarea.tetxA {
 .App{
   /* background-image: url("https://www.pullrequest.com/blog/ai-code-review-the-new-frontier-in-software-development/images/ai-code-review--the-new-frontier-in-software-development.webp"); */
   background-image: url("./bg12.webp");
+  -webkit-backdrop-filter: blur(30px); 
+  backdrop-filter: blur(200px);
   background-color: #002f39;
 
 }

@@ -281,7 +281,7 @@ function CCompiler() {
                 <button type="submit">Create File</button>
               </form>
             </div>
-            <h2>Your Files :</h2>
+            <h2 style={{ color : "black"}}>Your Files :</h2>
             <div className="file-list-container">
               <ul>
                 {files.map((file) => (
@@ -322,7 +322,7 @@ function CCompiler() {
         <div className="ele1">
           <br />
           <div className="row">
-            <h3 className="compWri">Write Your Python Code:</h3>
+            <h3 className="compWri">Write Your C Code:</h3>
             <div>
               {error && <div className="error">{error}</div>}
               <button
